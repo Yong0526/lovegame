@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>为你闯六关 💘</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Noto Sans SC', '微软雅黑', sans-serif;
+      background-color: #fffaf0; /* 米色背景 */
+      margin: 0;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+    h1 {
+      font-family: 'ZCOOL KuaiLe', cursive;
+      font-size: 32px;
+      color: #d81b60;
+      margin: 20px 0;
+      text-align: center;
+    }
+    p {
+      font-size: 20px;
+      color: #333;
+      margin: 15px 0;
+      line-height: 1.6;
+    }
+    .scene {
+      display: none;
+      max-width: 500px;
+      margin: auto;
+      text-align: center;
+    }
+    .active {
+      display: block;
+    }
+    button {
+      padding: 12px 24px;
+      margin: 10px;
+      font-size: 18px;
+      background-color: #f48fb1;
+      border: none;
+      border-radius: 12px;
+      color: white;
+      cursor: pointer;
+      width: 80%;
+      max-width: 300px;
+      font-family: 'Noto Sans SC', sans-serif;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #ec407a;
+    }
+    #result {
+      font-family: 'ZCOOL KuaiLe', cursive;
+      font-size: 24px;
+      color: #d81b60;
+      margin-top: 30px;
+      text-align: center;
+    }
+    .envelope-screen {
+      background: url('image/envelope.png') no-repeat center center;
+      background-size: contain;
+      height: 400px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      color: #333;
+    }
+    .envelope-screen button {
+      background-color: #e91e63;
+      font-size: 20px;
+      margin-top: 20px;
+    }
+    .overlay-box {
+      background-color: #fff8dc;
+      padding: 30px;
+      border-radius: 15px;
+      max-width: 90%;
+      color: #333;
+      font-size: 18px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      line-height: 1.7;
+      font-weight: 500;
+    }
+    .heart {
+      position: fixed;
+      color: #ff69b4;
+      font-size: 24px;
+      animation: floatUp 2s ease-out forwards;
+      pointer-events: none;
+      z-index: 999;
+    }
+    @keyframes floatUp {
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-100px) scale(1.5); }
+    }
+    #nextLevel {
+      font-size: 16px;
+      color: #999;
+      margin-top: 10px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<!-- 开场页面 -->
+<div class="scene active" id="envelope">
+  <div class="envelope-screen">
+    <div class="overlay-box">
+      <p>宝宝呀，这是我这几天完成的小游戏。<br>
+      听说你玩游戏很厉害闯关，所以我精心设计给你宝宝。<br>
+      我初学者不是很会，有些地方我尽力。<br>
+      希望你玩的开心，里面都是我们的回忆呢。<br>
+      <strong>我爱你，朱华金。</strong></p>
+      <button onclick="goToStart()">打开信封，开始游戏 💌</button>
+    </div>
+  </div>
+</div>
+
+<!-- 游戏引导页 -->
+<div class="scene" id="startScreen">
+  <h1>欢迎来到我们的爱情小游戏 💘</h1>
+  <p>你准备好接受挑战了吗？</p>
+  <button onclick="startGame()">开始游戏</button>
+</div>
+
+<!-- 六个关卡 -->
+<div class="scene" id="level1">
+  <p>关卡一：如果我突然心情不好，你会？</p>
+  <button onclick="nextLevel(1)">一直陪着你不讲话</button>
+  <button onclick="wrongAnswer(this)">不理你，给你冷静</button>
+</div>
+<div class="scene" id="level2">
+  <p>关卡二：你觉得我最可爱的地方是？</p>
+  <button onclick="nextLevel(2)">笑起来的样子</button>
+  <button onclick="wrongAnswer(this)">生气的时候</button>
+</div>
+<div class="scene" id="level3">
+  <p>关卡三：如果我们吵架了，你会？</p>
+  <button onclick="nextLevel(3)">主动哄你</button>
+  <button onclick="wrongAnswer(this)">等你来找我</button>
+</div>
+<div class="scene" id="level4">
+  <p>关卡四：你愿意每天对我说我爱你吗？</p>
+  <button onclick="nextLevel(4)">当然愿意</button>
+  <button onclick="wrongAnswer(this)">有时候说就行</button>
+</div>
+<div class="scene" id="level5">
+  <p>关卡五：你会为我准备惊喜吗？</p>
+  <button onclick="nextLevel(5)">经常偷偷准备</button>
+  <button onclick="wrongAnswer(this)">懒得准备</button>
+</div>
+<div class="scene" id="level6">
+  <p>关卡六：我变胖了你会？</p>
+  <button onclick="nextLevel(6)">还是抱紧你</button>
+  <button onclick="wrongAnswer(this)">叫你减肥</button>
+</div>
+
+<!-- 通关结果 -->
+<div id="result"></div>
+<div id="nextLevel"></div>
+
+<!-- 脚本 -->
+<script>
+  function goToStart() {
+    document.getElementById('envelope').classList.remove('active');
+    document.getElementById('startScreen').classList.add('active');
+  }
+
+  function startGame() {
+    document.getElementById('startScreen').classList.remove('active');
+    document.getElementById('level1').classList.add('active');
+  }
+
+  function nextLevel(level) {
+    showHearts();
+    document.getElementById('level' + level).classList.remove('active');
+    if (level < 6) {
+      document.getElementById('level' + (level + 1)).classList.add('active');
+    } else {
+      document.getElementById('result').innerHTML = `🎉 恭喜你顺利通关！你就是我命中注定的那个人 💕<br/><br/><span style="font-size: 24px; color: #e91e63;">我爱你，朱华金 💗</span>`;
+      document.getElementById('nextLevel').innerText = '3秒后进入第二关～';
+      setTimeout(() => {
+        window.location.href = "lovegame2.html";
+      }, 3000);
+    }
+  }
+
+  function wrongAnswer(btn) {
+    btn.style.backgroundColor = '#ccc';
+    btn.innerText = "哎呀，错啦～";
+    btn.disabled = true;
+  }
+
+  function showHearts() {
+    for (let i = 0; i < 10; i++) {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.textContent = "💖";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.top = Math.random() * 80 + "vh";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 2000);
+    }
+  }
+</script>
+
+</body>
+</html>

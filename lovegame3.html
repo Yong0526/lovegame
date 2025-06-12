@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>第三关：回忆猜猜猜</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #fefaf2;
+      font-family: 'Arial', sans-serif;
+      color: #4e3e29;
+      text-align: center;
+      animation: fadeIn 1s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      margin-top: 30px;
+      font-size: 28px;
+      background: linear-gradient(to right, #ffb347, #ffcc70);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    #game-container {
+      max-width: 550px;
+      margin: 30px auto;
+      padding: 25px;
+      background: #fffdf7;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .question {
+      font-size: 20px;
+      margin-bottom: 25px;
+      color: #5a3d1e;
+    }
+
+    .option {
+      display: block;
+      margin: 12px auto;
+      padding: 12px 20px;
+      background-color: #ffe6c7;
+      border: 1px solid #f5c694;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 16px;
+      width: 80%;
+      max-width: 300px;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .option:hover {
+      background-color: #ffd8a8;
+      transform: scale(1.03);
+    }
+
+    .option:active {
+      transform: scale(0.98);
+      background-color: #fdd09b;
+    }
+
+    #feedback {
+      font-size: 16px;
+      margin-top: 18px;
+      color: #d75d5d;
+      animation: fadeIn 0.5s ease-in;
+    }
+
+    #result {
+      font-size: 18px;
+      margin-top: 30px;
+      color: #8d4b00;
+      animation: fadeIn 0.8s ease-in;
+      line-height: 1.6;
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      text-decoration: none;
+      padding: 10px 20px;
+      background-color: #f7c78c;
+      border-radius: 10px;
+      color: #5b3200;
+      transition: background 0.3s;
+    }
+
+    a:hover {
+      background-color: #f5b96f;
+    }
+
+    .back {
+      font-size: 14px;
+      margin-top: 25px;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+  <h1>第三关：回忆猜猜猜 💭</h1>
+  <div id="game-container">
+    <div id="question" class="question">加载中...</div>
+    <div id="options"></div>
+    <div id="feedback"></div>
+    <div id="result"></div>
+  </div>
+
+  <div class="back">
+    <a href="lovegame2.html">← 回到第二关</a>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        text: "我们第一次见面，我误以为你是？",
+        options: ["大”蟀“哥", "大波波美女", "终极大魔王"],
+        answer: "大波波美女"
+      },
+      {
+        text: "你说过，哪一天是你最幸福的？",
+        options: ["我们在一起的每一天", "我们吵架后和好的那天", "我身体康复的第一天"],
+        answer: "我们在一起的每一天"
+      },
+      {
+        text: "我偷偷为你准备的第一份惊喜是什么？",
+        options: ["画了一幅我们之间的卡通故事给你", "送你游戏大礼包", "为你唱的第一首歌"],
+        answer: "画了一幅我们之间的卡通故事给你"
+      },
+      {
+        text: "我最怕的是什么？",
+        options: ["你不给我打电话", "你出轨", "你凶我"],
+        answer: "你凶我"
+      },
+      {
+        text: "我们最常一起做的事是？",
+        options: ["刷剧", "打游戏", "发呆聊天"],
+        answer: "发呆聊天"
+      },
+      {
+        text: "我们的暗号：天王盖地虎，",
+        options: ["天灵灵地灵灵", "宝塔镇河妖", "跟你讲冷笑话"],
+        answer: "宝塔镇河妖"
+      }
+    ];
+
+    let current = 0;
+    const questionEl = document.getElementById('question');
+    const optionsEl = document.getElementById('options');
+    const feedbackEl = document.getElementById('feedback');
+    const resultEl = document.getElementById('result');
+
+    function loadQuestion() {
+      const q = questions[current];
+      questionEl.innerHTML = `第 ${current + 1} 题：${q.text}`;
+      optionsEl.innerHTML = '';
+      feedbackEl.innerHTML = '';
+      resultEl.innerHTML = '';
+
+      q.options.forEach(option => {
+        const btn = document.createElement('button');
+        btn.className = 'option';
+        btn.textContent = option;
+        btn.onclick = () => {
+          if (option === q.answer) {
+            feedbackEl.innerHTML = '';
+            current++;
+            if (current < questions.length) {
+              setTimeout(() => loadQuestion(), 300);
+            } else {
+              showResult();
+            }
+          } else {
+            feedbackEl.innerHTML = "再想想～你肯定记得的 🧠💗";
+          }
+        };
+        optionsEl.appendChild(btn);
+      });
+    }
+
+    function showResult() {
+      questionEl.textContent = '';
+      optionsEl.innerHTML = '';
+      feedbackEl.innerHTML = '';
+      resultEl.innerHTML = `
+        🎉 太棒了！你答对了全部题目！<br><br>
+        💖 原来你一直都记得我们的点点滴滴～<br>
+        这些回忆，是我们之间最宝贵的宝藏。<br><br>
+        <a href="lovegame4.html">进入下一关 →</a>
+      `;
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>
+

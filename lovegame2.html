@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>第二关：链接相对物品，别搞错了哟</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #fef5e7; /* 米色背景 */
+      font-family: 'Arial', sans-serif;
+    }
+
+    h1 {
+      text-align: center;
+      color: #d6336c;
+      margin-top: 20px;
+      font-size: 24px;
+      text-shadow: 1px 1px 2px #ffffff80;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 16px;
+      color: #5c5c5c;
+      margin-bottom: 10px;
+    }
+
+    .game-container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 15px;
+      background: #fffaf2; /* 柔和米白 */
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    #items, #zones {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .item {
+      width: 60px;
+      height: 60px;
+      background-color: #fff;
+      border: 2px solid #ccc;
+      border-radius: 12px;
+      background-size: cover;
+      background-position: center;
+      cursor: grab;
+      transition: transform 0.2s ease;
+    }
+
+    .item:hover {
+      transform: scale(1.1);
+    }
+
+    .drop-zone {
+      width: 90px;
+      min-height: 100px;
+      padding: 8px;
+      text-align: center;
+      font-size: 13px;
+      color: #4d4d4d;
+      background-color: #fffefc;
+      border: 2px dashed #bbb;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    .drop-zone.success {
+      border-color: #4caf50;
+      background-color: #e6ffee;
+    }
+
+    #result {
+      text-align: center;
+      font-size: 18px;
+      margin-top: 20px;
+      color: #388e3c;
+    }
+
+    #result a {
+      display: inline-block;
+      margin-top: 12px;
+      background-color: #ff9a9e;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+
+    #result a:hover {
+      background-color: #f06292;
+    }
+  </style>
+</head>
+<body>
+  <h1>第二关：链接相对物品，别搞错了哟</h1>
+  <div class="subtitle">冷静点，用你聪明的小脑袋瓜想一想</div>
+
+  <div class="game-container">
+    <div id="items">
+      <div class="item" draggable="true" id="rings" style="background-image: url('image/rings.png');" title="情侣对戒"></div>
+      <div class="item" draggable="true" id="pants" style="background-image: url('image/pants.png');" title="裤子"></div>
+      <div class="item" draggable="true" id="laptop" style="background-image: url('image/laptop.png');" title="电脑"></div>
+      <div class="item" draggable="true" id="book" style="background-image: url('image/book.png');" title="书本"></div>
+      <div class="item" draggable="true" id="heels" style="background-image: url('image/heels.png');" title="高跟鞋"></div>
+      <div class="item" draggable="true" id="lipstick" style="background-image: url('image/lipstick.png');" title="口红"></div>
+      <div class="item" draggable="true" id="perfume" style="background-image: url('image/perfume.png');" title="香水"></div>
+      <div class="item" draggable="true" id="cake" style="background-image: url('image/cake.png');" title="蛋糕"></div>
+    </div>
+
+    <div id="zones">
+      <div class="drop-zone" data-id="rings">不锈钢圈999，保你到永久</div>
+      <div class="drop-zone" data-id="book">杨小姐最爱的书本角落</div>
+      <div class="drop-zone" data-id="heels">泡泡糖的高跟鞋之家</div>
+      <div class="drop-zone" data-id="perfume">闻着像花露水兑二锅头</div>
+      <div class="drop-zone" data-id="pants">裤子放哪都行</div>
+      <div class="drop-zone" data-id="laptop">男朋友常常用来看片的</div>
+      <div class="drop-zone" data-id="lipstick">这不是汉堡爱用的口红色号吗?</div>
+      <div class="drop-zone" data-id="cake">女朋友最爱的蛋糕小甜品</div>
+    </div>
+
+    <div id="result"></div>
+  </div>
+
+  <script>
+    let items = document.querySelectorAll('.item');
+    let zones = document.querySelectorAll('.drop-zone');
+    let placed = 0;
+
+    items.forEach(item => {
+      item.addEventListener('dragstart', e => {
+        e.dataTransfer.setData('text/plain', item.id);
+      });
+    });
+
+    zones.forEach(zone => {
+      zone.addEventListener('dragover', e => e.preventDefault());
+      zone.addEventListener('drop', e => {
+        e.preventDefault();
+        const draggedId = e.dataTransfer.getData('text/plain');
+        const draggedEl = document.getElementById(draggedId);
+
+        if (zone.dataset.id === draggedId && !zone.querySelector('.item')) {
+          zone.appendChild(draggedEl);
+          zone.classList.add('success');
+          draggedEl.setAttribute('draggable', 'false');
+          placed++;
+
+          if (placed === 8) {
+            document.getElementById('result').innerHTML = `
+              🎉 成功归位！朱华金，你很懂嘛~ <br>（回家，你就死定了！ 😏）<br><br>
+              👉 <a href="lovegame3.html">进入下一关</a>
+            `;
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
